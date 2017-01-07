@@ -20,11 +20,7 @@
 #define syscall_input(name, ...)  "a"(SYS_##name) , ## __VA_ARGS__ :
 #define syscall_clobber(...)      "r11", "rcx" , ## __VA_ARGS__ );
 
-#define SYS_read  0
-#define SYS_write 1
-#define SYS_open  2
-#define SYS_close 3
-#define SYS_exit  60
+#include <libc/syscall_numbers.h>
 
 ssize_t weak(read)(int fd, void *buf, size_t count) {
   ssize_t ret;

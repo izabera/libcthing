@@ -1,11 +1,15 @@
 all: gcc/libc.o gcc/gccwrap
 
+libc: gcc/libc.o
+
+gccwrap: gcc/gccwrap
+
 gcc/libc.o: lib/libc.c
-	gcc -nostartfiles -Ilib ./lib/libc.c -o gcc/libc.o -c -Os
+	gcc -g -nostartfiles -Ilib ./lib/libc.c -o gcc/libc.o -c -Os
 
 gcc/gccwrap:
 	echo '#!/bin/sh' > gcc/gccwrap
-	echo 'gcc -static -nostdinc -nostartfiles $(shell pwd)/gcc/libc.o -I$(shell pwd)/lib "$$@"' >> gcc/gccwrap
+	echo 'gcc -g -static -nostdinc -nostartfiles $(shell pwd)/gcc/libc.o -I$(shell pwd)/lib "$$@"' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
 test:
@@ -14,4 +18,4 @@ test:
 clean:
 	rm -f gcc/*
 
-.PHONY: clean test
+.PHONY: clean test libc gccwrap

@@ -1,7 +1,7 @@
 #ifndef STDINT_H
 typedef __INTMAX_TYPE__       intmax_t;
 typedef __UINTMAX_TYPE__     uintmax_t;
-typedef __SIG_ATOMIC_TYPE__  sig_atomic_t;
+//typedef __SIG_ATOMIC_TYPE__  sig_atomic_t;
 typedef __INT8_TYPE__          int8_t;
 typedef __INT16_TYPE__         int16_t;
 typedef __INT32_TYPE__         int32_t;
@@ -21,7 +21,7 @@ typedef __UINT_LEAST64_TYPE__ uint_least64_t;
 typedef __INT_FAST8_TYPE__     int_fast8_t;
 typedef __INT_FAST16_TYPE__    int_fast16_t;
 typedef __INT_FAST32_TYPE__    int_fast32_t;
-typedef __INT_FAST64_TYPE__    int_fast32_t;
+typedef __INT_FAST64_TYPE__    int_fast64_t;
 typedef __UINT_FAST8_TYPE__   uint_fast8_t;
 typedef __UINT_FAST16_TYPE__  uint_fast16_t;
 typedef __UINT_FAST32_TYPE__  uint_fast32_t;

@@ -64,7 +64,7 @@ _Noreturn void weak(_exit)(int status) {
   syscall_output()
   syscall_input(exit, "D"(status))
   syscall_clobber()
-  seterrno(ret);
+  __builtin_unreachable();
 }
 
 /*int main(int, char **);*/

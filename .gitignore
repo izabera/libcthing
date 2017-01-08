@@ -1,3 +1,2 @@
 test
-lib/*.o
-lib/*.c
+lib/*.[ch]

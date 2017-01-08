@@ -7,14 +7,14 @@ libc: gcc/libc.a
 gccwrap: gcc/gccwrap
 
 obj/%.o: lib/%.c
-	gcc -g -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders
+	gcc -g -fno-builtin -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders -Wall -Wextra
 
 gcc/libc.a: $(objects)
 	ar rcs gcc/libc.a obj/*.o
 
 gcc/gccwrap:
 	echo '#!/bin/sh' > gcc/gccwrap
-	echo 'gcc -g -static -nostdinc -nostartfiles "$$@" $(shell pwd)/gcc/libc.a \
+	echo 'gcc -g -fno-builtin -static -nostdinc -nostartfiles "$$@" $(shell pwd)/gcc/libc.a \
 		-I$(shell pwd)/headers -Wl,-gc-sections' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
@@ -28,6 +28,7 @@ symlinks:
 	cd lib && { \
 		for file in syscalls/*; do ln -s $$file $${file#*/}; done; \
 		for file in ctype/*; do ln -s $$file $${file#*/}; done; \
+		for file in string/*; do ln -s $$file $${file#*/}; done; \
 	}
 
 .PHONY: clean test symlinks libc gccwrap

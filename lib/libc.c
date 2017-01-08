@@ -1,6 +1,7 @@
 #define _GNU_SOURCE
 #include <stdint.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 
 #define noinline __attribute__((noinline))
 #if WITH_WEAK
@@ -59,10 +60,45 @@ int weak(close)(int fd) {
   return ret;
 }
 
+int weak(stat)(const char *path, struct stat *buf) {
+  int ret;
+  syscall_output()
+  syscall_input(stat, "D"(path), "S"(buf))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
+int weak(fstat)(int fd, struct stat *buf) {
+  int ret;
+  syscall_output()
+  syscall_input(fstat, "D"(fd), "S"(buf))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
+int weak(lstat)(const char *path, struct stat *buf) {
+  int ret;
+  syscall_output()
+  syscall_input(lstat, "D"(path), "S"(buf))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
 _Noreturn void weak(_exit)(int status) {
   int ret;
   syscall_output()
   syscall_input(exit, "D"(status))
+  syscall_clobber()
+  __builtin_unreachable();
+}
+
+_Noreturn void weak(exit_group)(int status) {
+  int ret;
+  syscall_output()
+  syscall_input(exit_group, "D"(status))
   syscall_clobber()
   __builtin_unreachable();
 }

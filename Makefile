@@ -25,6 +25,9 @@ clean:
 	rm -f gcc/* obj/* lib/* 2>/dev/null || :
 
 symlinks:
-	cd lib && for file in syscalls/*; do ln -s $$file $${file#*/}; done
+	cd lib && { \
+		for file in syscalls/*; do ln -s $$file $${file#*/}; done; \
+		for file in ctype/*; do ln -s $$file $${file#*/}; done; \
+	}
 
 .PHONY: clean test symlinks libc gccwrap

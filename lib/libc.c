@@ -26,7 +26,7 @@
 ssize_t weak(read)(int fd, void *buf, size_t count) {
   ssize_t ret;
   syscall_output("+S"(buf))
-  syscall_input(read, "D"(fd), "d"(count))
+  syscall_input(read, "D"(fd), "S"(buf), "d"(count))
   syscall_clobber()
   seterrno(ret);
   return ret;
@@ -49,7 +49,6 @@ int weak(open)(const char *path, int flags, mode_t mode) {
   seterrno(ret);
   return ret;
 }
-#define open(path, flags, ...) open(path, flags, (0,##__VA_ARGS__))
 
 int weak(close)(int fd) {
   int ret;
@@ -98,13 +97,8 @@ int weak(poll)(struct pollfd *fds, nfds_t nfds, int timeout) {
   return ret;
 }
 
-//  <lseek>:
-// b8 08 00 00 00       	mov    $0x8,%eax
-// 0f 05                	syscall
-// 48 98                	cltq       <- todo: check this
-// c3                   	retq
 off_t weak(lseek)(int fd, off_t offset, int whence) {
-  int ret;
+  off_t ret;
   syscall_output()
   syscall_input(lseek, "D"(fd), "S"(offset), "d"(whence))
   syscall_clobber()
@@ -558,7 +552,7 @@ int weak(dup3)(int oldfd, int newfd, int flags) {
 int weak(pipe2)(int pipefd[2], int flags) {
   int ret;
   syscall_output()
-  syscall_input(dup3, "D"(pipefd), "S"(flags))
+  syscall_input(pipe2, "D"(pipefd), "S"(flags))
   syscall_clobber()
   seterrno(ret);
   return ret;

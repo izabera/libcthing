@@ -13,5 +13,7 @@ typedef   signed long  blksize_t;
 typedef   signed long  blkcnt_t;
 typedef   signed long  time_t;
 struct timespec { time_t tv_sec; long tv_nsec; };
+
+typedef int pid_t;
 #define NULL ((void*)0)
 #endif

@@ -1,3 +1,5 @@
+#ifndef SYSCALL_NUMBERS_H
+#define SYSCALL_NUMBERS_H
 #define SYS_read                     0
 #define SYS_write                    1
 #define SYS_open                     2
@@ -327,3 +329,4 @@
 //#define copy_file_range 326
 //#define preadv2 327
 //#define pwritev2 328
+#endif

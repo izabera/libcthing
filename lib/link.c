@@ -1,0 +1,9 @@
+#include "syscall_preamble.h"
+int link(const char *oldpath, const char *newpath) {
+  int ret;
+  syscall_output()
+  syscall_input(link, "D"(oldpath), "S"(newpath))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}

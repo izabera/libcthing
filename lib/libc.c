@@ -296,13 +296,66 @@ int fchdir(int fd) {
   return ret;
 }
 
-// rename
-// mkdir
-// rmdir
-// creat
-// link
-// unlink
-// symlink
+int weak(rename)(const char *oldpath, const char *newpath) {
+  int ret;
+  syscall_output()
+  syscall_input(rename, "D"(oldpath), "S"(newpath))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
+int weak(mkdir)(const char *path, mode_t mode) {
+  int ret;
+  syscall_output()
+  syscall_input(mkdir, "D"(path), "S"(mode))
+  syscall_clobber()
+  return ret;
+}
+
+int weak(rmdir)(const char *path) {
+  int ret;
+  syscall_output()
+  syscall_input(rmdir, "D"(path))
+  syscall_clobber()
+  return ret;
+}
+
+int weak(creat)(const char *path, int flags) {
+  int ret;
+  syscall_output()
+  syscall_input(creat, "D"(path), "S"(flags))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
+int weak(link)(const char *oldpath, const char *newpath) {
+  int ret;
+  syscall_output()
+  syscall_input(link, "D"(oldpath), "S"(newpath))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
+int weak(unlink)(const char *path) {
+  int ret;
+  syscall_output()
+  syscall_input(unlink, "D"(path))
+  syscall_clobber()
+  return ret;
+}
+
+int weak(symlink)(const char *target, const char *linkpath) {
+  int ret;
+  syscall_output()
+  syscall_input(symlink, "D"(target), "S"(linkpath))
+  syscall_clobber()
+  seterrno(ret);
+  return ret;
+}
+
 // readlink
 // chmod
 // fchmod

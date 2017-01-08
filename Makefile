@@ -1,16 +1,16 @@
 all: libc gccwrap
 
-objects = $(addsuffix .o,$(basename $(wildcard lib/*.c)))
+objects = $(addprefix obj/,$(addsuffix .o,$(notdir $(basename $(wildcard lib/*.c)))))
 
 libc: gcc/libc.a
 
 gccwrap: gcc/gccwrap
 
-lib/%.o: lib/%.c
+obj/%.o: lib/%.c
 	gcc -g -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders
 
 gcc/libc.a: $(objects)
-	ar rcs gcc/libc.a $(objects)
+	ar rcs gcc/libc.a obj/*.o
 
 gcc/gccwrap:
 	echo '#!/bin/sh' > gcc/gccwrap
@@ -22,6 +22,9 @@ test:
 	gcc/gccwrap test.c -o test -flto -Os
 
 clean:
-	rm -f gcc/* lib/*.o
+	rm -f gcc/* obj/* lib/* 2>/dev/null || :
 
-.PHONY: clean test libc gccwrap
+symlinks:
+	cd lib && for file in syscalls/*; do ln -s $$file $${file#*/}; done
+
+.PHONY: clean test symlinks libc gccwrap

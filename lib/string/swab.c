@@ -1,4 +1,4 @@
-#include <string.h>
+#include <sys/types.h>
 #include <stdint.h>
 void swab(const void *restrict from, void *restrict to, ssize_t n) {
   uint16_t *src = (void *)from, *dest = to;

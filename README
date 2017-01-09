@@ -1,0 +1,16 @@
+microlibc
+=========
+
+small experimentalish very-non-standard libc
+
+
+build the library
+-----------------
+
+./configure
+make
+
+build programs with it
+----------------------
+
+gcc/gccwrap myprogram.c -o myprogram

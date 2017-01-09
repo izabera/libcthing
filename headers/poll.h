@@ -6,7 +6,7 @@ struct pollfd {
 	short events;
 	short revents;
 };
-int poll(struct pollfd *, nfds_t, int);
+long poll(struct pollfd *, nfds_t, int);
 #define POLLIN     0x001
 #define POLLPRI    0x002
 #define POLLOUT    0x004

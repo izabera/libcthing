@@ -2,10 +2,11 @@
 #define SYSCALL_PREAMBLE_H
 
 #ifdef WITH_ERRNO
-#define seterrno(ret) do { if (ret < 0) { errno = -ret; ret = -1; } while (0)
+#define __seterrno() do { if (ret < 0) { errno = -ret; ret = -1; } while (0)
 #include <errno.h>
 #else
-#define seterrno(ret)
+long __seterrno(void);
+//#define __seterrno() ret
 #endif
 
 #define syscall_output(...)       asm volatile("syscall" : "=a"(ret) , ## __VA_ARGS__ :

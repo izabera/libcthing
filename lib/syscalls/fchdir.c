@@ -1,5 +1,5 @@
 #include "syscall_preamble.h"
-int fchdir(int fd) {
+long fchdir(int fd) {
   int ret;
   syscall_output()
   syscall_input(fchdir, "D"(fd))

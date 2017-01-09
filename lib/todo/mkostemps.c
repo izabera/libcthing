@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include <string.h>
+#include <fcntl.h>
 int mkostemps(char *template, int len, int flags) {
   size_t suff = strlen(template) - len - 6;
   if (strncmp(template+suff, "XXXXXX", 6)) return -1;

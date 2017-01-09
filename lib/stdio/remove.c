@@ -1,4 +1,6 @@
 #include "stdio.h"
+#include <sys/stat.h>
+#include <unistd.h>
 int remove(const char *pathname) {
   struct stat st;
   if (stat(pathname, &st) == -1) return -1;

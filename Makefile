@@ -7,15 +7,14 @@ libc: gcc/libc.a
 gccwrap: gcc/gccwrap
 
 obj/%.o: lib/%.c
-	gcc -g -fno-builtin -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders -Wall -Wextra
+	gcc -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders -Wall -Wextra
 
 gcc/libc.a: $(objects)
 	ar rcs gcc/libc.a obj/*.o
 
 gcc/gccwrap:
 	echo '#!/bin/sh' > gcc/gccwrap
-	echo 'gcc -g -fno-builtin -static -nostdinc -nostartfiles "$$@" $(shell pwd)/gcc/libc.a \
-		-I$(shell pwd)/headers -Wl,-gc-sections' >> gcc/gccwrap
+	echo 'gcc -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
 test: gccwrap libc

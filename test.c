@@ -3,9 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-void atexit_func(void) {
-  write(1, "exiting\n", 8);
-}
+void writestr(char *str) { write(1, str, strlen(str)); }
+
+void atexit_func(void) { writestr("exiting\n"); }
 
 char *upperstring(char *str) {
   for (int i = 0; str[i]; i++)
@@ -14,13 +14,19 @@ char *upperstring(char *str) {
 }
 
 int main(int argc, char *argv[]) {
-  write(1, "this is main\n", 13);
-  write(1, "my argv[]:\n", 11);
+  writestr("this is main\n");
+  writestr("my argv[]:\n");
   for (int i = 0; i < argc; i++) {
-    write(1, upperstring(argv[i]), strlen(argv[i]));
-    write(1, "\n", 1);
+    writestr(upperstring(argv[i]));
+    writestr("\n");
   }
+
+  if (unlink("foobar") == -1)
+    writestr("unlink failed\n");
+  else
+    writestr("unlink succeeded\n");
+
   atexit(atexit_func);
-  write(1, "_exit(42)\n", 10);
+  writestr("_exit(42)\n");
   return 42;
 }

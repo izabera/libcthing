@@ -6,7 +6,6 @@
 #include <errno.h>
 #else
 long __seterrno(void);
-//#define __seterrno() ret
 #endif
 
 #define syscall_output(...)       asm volatile("syscall" : "=a"(ret) , ## __VA_ARGS__ :

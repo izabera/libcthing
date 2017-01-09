@@ -4,7 +4,7 @@
 
 int system(const char *command) {
   pid_t p;
-  switch ((p = fork())) {
+  switch ((p = vfork())) {
     case -1: return -1;
     case 0: execve("/bin/sh", (char *[]) { "sh", "-c", (char *)command, NULL }, environ);
             _exit(127);

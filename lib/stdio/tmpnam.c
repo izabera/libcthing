@@ -1,4 +1,7 @@
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 char *tmpnam(char *s) {
   static char buf[PATH_MAX] = "/tmp/XXXXXX";
   char *template = s;

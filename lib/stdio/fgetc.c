@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include <unistd.h>
 int fgetc(FILE *f) {
   if (f->unget[0]) {
     f->unget[0] = 0;

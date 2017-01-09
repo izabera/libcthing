@@ -16,3 +16,4 @@ FILE _stdin  = { .fd = 0, .bufmode = 'f' },
      *stdout = &_stdout,
      *stdin  = &_stdin ,
      *stderr = &_stderr;
+mode_t __strtomode(const char *);

@@ -11,7 +11,11 @@ typedef unsigned int   gid_t;
 typedef unsigned long  off_t;
 typedef   signed long  blksize_t;
 typedef   signed long  blkcnt_t;
+
 typedef   signed long  time_t;
+typedef   signed long suseconds_t;
+
+struct timeval { time_t tv_sec; suseconds_t tv_usec; };
 struct timespec { time_t tv_sec; long tv_nsec; };
 
 typedef int pid_t;

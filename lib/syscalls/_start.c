@@ -1,8 +1,10 @@
 #include "syscall_preamble.h"
 #include <stdlib.h>
 
+char **environ;
 int main(int, char **);
-void __start(int argc, char **argv) {
+void __start(int argc, char *argv[]) {
+  environ = argv + argc + 1;
   exit(main(argc, argv));
 }
 

@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 void writestr(char *str) { write(1, str, strlen(str)); }
 
@@ -14,6 +15,8 @@ char *upperstring(char *str) {
 }
 
 int main(int argc, char *argv[]) {
+  system("env");
+
   writestr("this is main\n");
   writestr("my argv[]:\n");
   for (int i = 0; i < argc; i++) {
@@ -27,6 +30,6 @@ int main(int argc, char *argv[]) {
     writestr("unlink succeeded\n");
 
   atexit(atexit_func);
-  writestr("_exit(42)\n");
-  return 42;
+  writestr("_exit(errno)\n");
+  return errno;
 }

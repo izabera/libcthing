@@ -9,6 +9,7 @@ build the library
 
 ./configure
 make
+make test
 
 build programs with it
 ----------------------

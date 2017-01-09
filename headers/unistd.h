@@ -6,6 +6,8 @@ ssize_t write(int, const void *, size_t);
 _Noreturn void _exit(int);
 #define _Exit _exit
 
+extern char **environ;
+
 #define SEEK_SET 0
 #define SEEK_CUR 1
 #define SEEK_END 2
@@ -92,4 +94,5 @@ int          unlink(const char *);
 int          unlinkat(int, const char *, int);
 ssize_t      write(int, const void *, size_t);
 
+long vfork(void);
 #endif

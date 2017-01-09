@@ -1,6 +1,11 @@
 #include "syscall_preamble.h"
+#include <stdlib.h>
+
 int main(int, char **);
-void _exit(int);
+void __start(int argc, char **argv) {
+  exit(main(argc, argv));
+}
+
 asm(".pushsection .text._start\n"
     ".type _start, @function\n"
     ".global _start\n"
@@ -11,8 +16,6 @@ asm(".pushsection .text._start\n"
     // pop incremented %rsp, which is now pointing to argv
     // main's 2nd param is %rsi
     "mov %rsp,%rsi\n"
-    "call main\n"
-    "mov %rax,%rdi\n"
-    "call _exit\n"
+    "jmp __start\n"
     ".size _start, . - _start\n"
     ".popsection");

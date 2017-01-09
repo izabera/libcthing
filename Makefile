@@ -18,7 +18,7 @@ gcc/gccwrap:
 		-I$(shell pwd)/headers -Wl,-gc-sections' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
-test:
+test: gccwrap libc
 	gcc/gccwrap test.c -o test -flto -Os
 
 clean:

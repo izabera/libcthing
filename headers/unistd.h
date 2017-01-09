@@ -3,6 +3,8 @@
 #include <sys/types.h>
 ssize_t read(int, void *, size_t);
 ssize_t write(int, const void *, size_t);
+_Noreturn void _exit(int);
+#define _Exit _exit
 
 #define SEEK_SET 0
 #define SEEK_CUR 1

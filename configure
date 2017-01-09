@@ -1,4 +1,4 @@
 #!/bin/sh -e
 cd lib
-ln -fs syscalls/* ctype/* string/* stdlib/* .
+ln -fs syscalls/* ctype/* string/* stdlib/* stdio/* .
 echo done, run make

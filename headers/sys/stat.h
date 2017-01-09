@@ -1,5 +1,5 @@
-#ifndef SYS_STAT_H
-#define SYS_STAT_H
+#ifndef __SYS_STAT_H
+#define __SYS_STAT_H
 #include <sys/types.h>
 struct stat {
 	dev_t st_dev;

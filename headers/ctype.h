@@ -1,3 +1,5 @@
+#ifndef __CTYPE_H
+#define __CTYPE_H
 int   isalnum(int);
 int   isalpha(int);
 int   isascii(int);
@@ -16,3 +18,4 @@ int   tolower(int);
 int   toupper(int);
 #define _toupper(x) (x&~32)
 #define _tolower(x) (x| 32)
+#endif

@@ -1,3 +1,5 @@
+#ifndef __STRING_H
+#define __STRING_H
 #include <sys/types.h>
 void *memccpy(void *dest, const void *src, int c, size_t n);
 void *memchr(const void *s, int c, size_t n);
@@ -31,3 +33,4 @@ size_t strcspn(const char *s, const char *accept);
 char *strpbrk(const char *s, const char *accept);
 void *memfrob(void *s, size_t n);
 char *strfry(char *s);
+#endif

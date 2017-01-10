@@ -13,7 +13,7 @@ int   ispunct(int);
 int   isspace(int);
 int   isupper(int);
 int   isxdigit(int);
-int   toascii(int);
+static inline int toascii(int c) { return c & 127; }
 int   tolower(int);
 int   toupper(int);
 #define _toupper(x) (x&~32)

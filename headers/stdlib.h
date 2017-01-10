@@ -5,26 +5,40 @@ _Noreturn void _exit(int);
 int atexit(void (*)(void));
 
 int mkostemps(char *, int, int);
-static inline int mkstemp(char *template) { return mkostemps(template, 0, 0); }
-static inline int mkstemps(char *template, int len) { return mkostemps(template, len, 0); }
-static inline int mkostemp(char *template, int flags) { return mkostemps(template, 0, flags); }
+static inline int mkstemp (char *templ)            { return mkostemps(templ, 0, 0); }
+static inline int mkstemps(char *templ, int len)   { return mkostemps(templ, len, 0); }
+static inline int mkostemp(char *templ, int flags) { return mkostemps(templ, 0, flags); }
 char *mktemp(char *);
+
+static inline int    abs( int i) { return i > 0 ? i : -i; }
+static inline long  labs(long i) { return i > 0 ? i : -i; }
+static inline long llabs(long i) { return i > 0 ? i : -i; }
+
+typedef struct { int quot, rem; } div_t;
+typedef struct { long quot, rem; } ldiv_t;
+typedef struct { long quot, rem; } lldiv_t;
+
+static inline   div_t   div( int num,  int rem) { return (  div_t) { num / rem, num % rem }; }
+static inline  ldiv_t  ldiv(long num, long rem) { return ( ldiv_t) { num / rem, num % rem }; }
+static inline lldiv_t lldiv(long num, long rem) { return (lldiv_t) { num / rem, num % rem }; }
+
+void         *bsearch(const void *, const void *, size_t, size_t,
+                  int (*)(const void *, const void *));
+
+void          exit(int);
+int           system(const char *);
+
 
 long          a64l(const char *);
 void          abort(void);
-int           abs(int);
-int           atexit(void (*)(void));
 double        atof(const char *);
 int           atoi(const char *);
 long          atol(const char *);
 long long     atoll(const char *);
-void         *bsearch(const void *, const void *, size_t, size_t,
-                  int (*)(const void *, const void *));
 void         *calloc(size_t, size_t);
 //div_t         div(int, int);
 double        drand48(void);
 double        erand48(unsigned short [3]);
-void          exit(int);
 void          free(void *);
 char         *getenv(const char *);
 int           getsubopt(char **, char *const *, char **);
@@ -32,10 +46,8 @@ int           grantpt(int);
 char         *initstate(unsigned, char *, size_t);
 long          jrand48(unsigned short [3]);
 char         *l64a(long);
-long          labs(long);
 void          lcong48(unsigned short [7]);
 //ldiv_t        ldiv(long, long);
-long long     llabs(long long);
 //lldiv_t       lldiv(long long, long long);
 long          lrand48(void);
 void         *malloc(size_t);
@@ -71,7 +83,6 @@ long long     strtoll(const char *restrict, char **restrict, int);
 unsigned long strtoul(const char *restrict, char **restrict, int);
 unsigned long long
               strtoull(const char *restrict, char **restrict, int);
-int           system(const char *);
 int           unlockpt(int);
 int           unsetenv(const char *);
 //size_t        wcstombs(char *restrict, const wchar_t *restrict, size_t);

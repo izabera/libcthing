@@ -1,8 +1,10 @@
 #include "stdio.h"
 #include <sys/stat.h>
 #include <unistd.h>
+#include <errno.h>
+
 int remove(const char *pathname) {
-  struct stat st;
-  if (stat(pathname, &st) == -1) return -1;
-  return S_ISDIR(st.st_mode) ? rmdir(pathname) : unlink(pathname);
+  if (unlink(pathname) == -1 && errno == EISDIR)
+    return rmdir(pathname);
+  return 0;
 }

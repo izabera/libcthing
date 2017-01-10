@@ -5,5 +5,5 @@ long time(time_t *tloc) {
   syscall_output()
   syscall_input(time, "D"(tloc))
   syscall_clobber()
-  return ret;
+  return __seterrno();
 }

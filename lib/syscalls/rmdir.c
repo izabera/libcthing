@@ -1,8 +1,8 @@
 #include "syscall_preamble.h"
 long rmdir(const char *path) {
-  int ret;
+  long ret;
   syscall_output()
   syscall_input(rmdir, "D"(path))
   syscall_clobber()
-  return ret;
+  return __seterrno();
 }

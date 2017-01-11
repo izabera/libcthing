@@ -50,7 +50,7 @@ int          chown(const char *, uid_t, gid_t);
 size_t       confstr(int, char *, size_t);
 char        *crypt(const char *, const char *);
 void         encrypt(char [64], int);
-int          execlp(const char *, const char *, ...);
+//int          execlp(const char *, const char *, ...);
 int          execvp(const char *, char *const []);
 int          faccessat(int, const char *, int, int);
 int          fchown(int, uid_t, gid_t);

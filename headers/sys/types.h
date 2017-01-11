@@ -19,6 +19,8 @@ typedef unsigned int   useconds_t;
 struct timeval { time_t tv_sec; suseconds_t tv_usec; };
 struct timespec { time_t tv_sec; long tv_nsec; };
 
+typedef long clockid_t;
+
 typedef int pid_t;
 #define NULL ((void*)0)
 #endif

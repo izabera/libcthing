@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 int system(const char *command) {
+  if (!command) return 1; // command = ":";   /bin/sh must work
   pid_t p;
   switch ((p = vfork())) {
     case -1: return -1;

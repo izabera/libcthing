@@ -14,6 +14,7 @@ typedef   signed long  blkcnt_t;
 
 typedef   signed long  time_t;
 typedef   signed long suseconds_t;
+typedef unsigned int   useconds_t;
 
 struct timeval { time_t tv_sec; suseconds_t tv_usec; };
 struct timespec { time_t tv_sec; long tv_nsec; };

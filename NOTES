@@ -1,3 +1,5 @@
 some very small functions have static inline duplicates
 if the header is included the code is inlined
 otherwise, the actual function is called
+
+some variadic functions are implemented as macros

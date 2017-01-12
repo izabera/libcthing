@@ -33,6 +33,7 @@
 #define INT_MAX              __INT_MAX__
 #define LONG_MAX             __LONG_MAX__
 #define LONG_LONG_MAX        __LONG_LONG_MAX__
+#define LLONG_MAX            __LONG_LONG_MAX__
 #define WINT_MAX             __WINT_MAX__
 #define SIZE_MAX             __SIZE_MAX__
 #define PTRDIFF_MAX          __PTRDIFF_MAX__
@@ -70,6 +71,9 @@
 #define SIG_ATOMIC_MIN       __SIG_ATOMIC_MIN__
 
 #define MB_LEN_MAX 4
+
+#define PAGE_SIZE 4096
+#define LONG_BIT 64
 
 #define PIPE_BUF 4096
 #ifdef PAGE_SIZE

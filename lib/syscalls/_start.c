@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 char **environ;
-int main(int, char **);
+int main(int, char **, char **);
 void __start(int argc, char *argv[]) {
   environ = argv + argc + 1;
-  exit(main(argc, argv));
+  exit(main(argc, argv, environ));
 }
 
 asm(".pushsection .text._start\n"

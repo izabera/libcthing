@@ -26,6 +26,10 @@ void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, 
 
 int system(const char *);
 
+#include <limits.h>
+static inline void *aligned_alloc(size_t align, size_t size) { return memalign(    align, size); }
+static inline void *       valloc(              size_t size) { return memalign(PAGE_SIZE, size); }
+
 double          strtod(const char *restrict, char **restrict);
 float           strtof(const char *restrict, char **restrict);
 long            strtol(const char *restrict, char **restrict, int);

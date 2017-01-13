@@ -9,6 +9,7 @@ long access(const char *, int);
 long alarm(unsigned);
 long close(int);
 long chdir(const char *);
+long chroot(const char *);
 long dup(int);
 long dup2(int, int);
 long execve(const char *, char *const [], char *const []);
@@ -25,6 +26,8 @@ long pipe(int[2]);
 long read(int, void *, size_t);
 long rmdir(const char *);
 
+long sendfile(int, int, off_t, size_t);
+
 // avoid pulling in time.h if it's not needed
 #ifdef _TIME_H
 static inline long sleep(unsigned sec) { return nanosleep(&(struct timespec){ .tv_sec = sec }, 0); }
@@ -38,6 +41,8 @@ long usleep(useconds_t);
 
 void swab(const void *restrict, void *restrict, ssize_t);
 long symlink(const char *, const char *);
+
+long tee(int, int, size_t, unsigned int);
 
 long unlink(const char *);
 long vfork(void);

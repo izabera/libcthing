@@ -1,5 +1,9 @@
+#ifndef _STDLIB_H
+#define _STDLIB_H
+
 #include <sys/types.h>
 _Noreturn void exit(int);
+_Noreturn void quick_exit(int);
 _Noreturn void _exit(int);
 _Noreturn static inline void _Exit(int x) { _exit(x); }
 int atexit(void (*)(void));
@@ -26,9 +30,28 @@ void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, 
 
 int system(const char *);
 
+void *memalign(size_t alignment, size_t size);
+
+#ifdef __HIDE_INLINES
+void *aligned_alloc(size_t, size_t);
+void *valloc(size_t);
+void *pvalloc(size_t);
+int posix_memalign(void **, size_t, size_t);
+#else
 #include <limits.h>
+#include <errno.h>
 static inline void *aligned_alloc(size_t align, size_t size) { return memalign(    align, size); }
 static inline void *       valloc(              size_t size) { return memalign(PAGE_SIZE, size); }
+static inline void *      pvalloc(              size_t size) {
+  return memalign(PAGE_SIZE, (size + PAGE_SIZE-1) & ~(PAGE_SIZE-1));
+}
+static inline int posix_memalign(void **p, size_t align, size_t size) {
+  void *tmp = memalign(align, size);
+  if (!tmp) return errno;
+  *p = tmp;
+  return 0;
+}
+#endif
 
 double          strtod(const char *restrict, char **restrict);
 float           strtof(const char *restrict, char **restrict);
@@ -87,3 +110,5 @@ int           unlockpt(int);
 int           unsetenv(const char *);
 //size_t        wcstombs(char *restrict, const wchar_t *restrict, size_t);
 //int           wctomb(char *, wchar_t);
+
+#endif

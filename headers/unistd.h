@@ -12,8 +12,12 @@ long chdir(const char *);
 long chroot(const char *);
 long dup(int);
 long dup2(int, int);
+
 long execve(const char *, char *const [], char *const []);
+long execvpe(const char *path, char *const argv[], char *const env[]);
+
 static inline long execv(const char *path, char *const argv[]) { return execve(path, argv, environ); }
+static inline long execvp(const char *path, char *const argv[]) { return execvpe(path, argv, environ); }
 #define execl(file, ...)    execv(file, (char*[]) { __VA_ARGS__ })
 #define execlp(file, ...)  execvp(file, (char*[]) { __VA_ARGS__ })
 
@@ -56,7 +60,7 @@ size_t       confstr(int, char *, size_t);
 char        *crypt(const char *, const char *);
 void         encrypt(char [64], int);
 //int          execlp(const char *, const char *, ...);
-int          execvp(const char *, char *const []);
+//int          execvp(const char *, char *const []);
 int          faccessat(int, const char *, int, int);
 int          fchown(int, uid_t, gid_t);
 int          fchownat(int, const char *, uid_t, gid_t, int);

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <search.h>
 
 void writestr(char *str) { write(1, str, strlen(str)); }
 
@@ -28,6 +29,13 @@ int main(int argc, char *argv[]) {
     writestr("unlink failed\n");
   else
     writestr("unlink succeeded\n");
+
+  hcreate(100);
+  ENTRY e = { "foo", "bar" };
+  hsearch(e, ENTER);
+  writestr(hsearch(e, FIND) ? "found\n" : "nope\n");
+  e.key = "meow";
+  writestr(hsearch(e, FIND) ? "found\n" : "nope\n");
 
   atexit(atexit_func);
   writestr("_exit(errno)\n");

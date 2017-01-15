@@ -29,3 +29,9 @@ long munmap(void *, size_t);
 #define PROT_EXEC      4
 #define PROT_GROWSDOWN 0x01000000
 #define PROT_GROWSUP   0x02000000
+
+#define MREMAP_MAYMOVE 1
+#define MREMAP_FIXED 2
+void *mremap(void *, size_t, size_t, int, void *);
+#define __first(a, ...) a
+#define mremap(a, b, c, d, ...) mremap(a, b, d, d, __first(__VA_ARGS__+0))

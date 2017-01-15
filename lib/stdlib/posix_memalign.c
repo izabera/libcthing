@@ -1,3 +1,10 @@
-#include <sys/types.h>
+#define __HIDE_INLINES
+#include <stdlib.h>
+#include <errno.h>
 
-void *aligned_alloc(size_t align, size_t size) { return memalign(align, size); }
+int posix_memalign(void **p, size_t align, size_t size) {
+  void *tmp = memalign(align, size);
+  if (!tmp) return errno;
+  *p = tmp;
+  return 0;
+}

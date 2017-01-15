@@ -65,6 +65,8 @@ static inline long   atol(const char *s) { return strtol(s, 0, 10); }
 static inline long  atoll(const char *s) { return strtol(s, 0, 10); }
 static inline double atof(const char *s) { return strtod(s, 0); }
 
+char *getenv(const char *);
+
 long          a64l(const char *);
 void          abort(void);
 
@@ -73,7 +75,6 @@ void         *calloc(size_t, size_t);
 double        drand48(void);
 double        erand48(unsigned short [3]);
 void          free(void *);
-char         *getenv(const char *);
 int           getsubopt(char **, char *const *, char **);
 int           grantpt(int);
 char         *initstate(unsigned, char *, size_t);

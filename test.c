@@ -37,6 +37,13 @@ int main(int argc, char *argv[]) {
   e.key = "meow";
   writestr(hsearch(e, FIND) ? "found\n" : "nope\n");
 
+  char *path = getenv("PATH");
+  if (path) {
+    writestr(path);
+    writestr("\n");
+  }
+  else writestr("no PATH\n");
+
   atexit(atexit_func);
   writestr("_exit(errno)\n");
   return errno;

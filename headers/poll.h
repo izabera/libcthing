@@ -1,5 +1,5 @@
-#ifndef __POLL_H
-#define __POLL_H
+#ifndef _POLL_H
+#define _POLL_H
 typedef unsigned long nfds_t;
 struct pollfd {
 	int fd;

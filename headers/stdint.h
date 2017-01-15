@@ -1,5 +1,5 @@
-#ifndef __STDINT_H
-#define __STDINT_H
+#ifndef _STDINT_H
+#define _STDINT_H
 typedef __INTMAX_TYPE__       intmax_t;
 typedef __UINTMAX_TYPE__     uintmax_t;
 //typedef __SIG_ATOMIC_TYPE__  sig_atomic_t;

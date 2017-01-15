@@ -1,5 +1,5 @@
-#ifndef __CTYPE_H
-#define __CTYPE_H
+#ifndef _CTYPE_H
+#define _CTYPE_H
 int   isalnum(int);
 int   isalpha(int);
 int   isascii(int);

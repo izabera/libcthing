@@ -1,3 +1,6 @@
+#ifndef _ERRNO_H
+#define _ERRNO_H
+
 extern long errno;
 
 // also stolen from musl
@@ -135,3 +138,5 @@ extern long errno;
 #define ENOTRECOVERABLE 131
 #define ERFKILL         132
 #define EHWPOISON       133
+
+#endif

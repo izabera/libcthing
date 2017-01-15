@@ -1,5 +1,5 @@
-#ifndef __STRINGS_H
-#define __STRINGS_H
+#ifndef _STRINGS_H
+#define _STRINGS_H
 #include <sys/types.h>
 
 static inline int bcmp(const void *s1, const void *s2, size_t n) { return memcmp(s1, s2, n); }

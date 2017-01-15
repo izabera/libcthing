@@ -1,5 +1,5 @@
-#ifndef __SYS_TYPES_H
-#define __SYS_TYPES_H
+#ifndef _SYS_TYPES_H
+#define _SYS_TYPES_H
 #include <stddef.h>
 typedef unsigned int   mode_t;
 typedef   signed long  ssize_t;

@@ -1,5 +1,6 @@
-#ifndef __STDIO_H
-#define __STDIO_H
+#ifndef _STDIO_H
+#define _STDIO_H
+
 #define EOF -1
 #define BUFSIZ 4096
 #include <sys/types.h>

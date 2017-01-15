@@ -1,3 +1,6 @@
+#ifndef _SYS_MMAN_H
+#define _SYS_MMAN_H
+
 #include <sys/types.h>
 
 long mprotect(void *addr, size_t len, int prot);
@@ -35,3 +38,5 @@ long munmap(void *, size_t);
 void *mremap(void *, size_t, size_t, int, void *);
 #define __first(a, ...) a
 #define mremap(a, b, c, d, ...) mremap(a, b, d, d, __first(__VA_ARGS__+0))
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef _SYS_RESOURCE_H
+#define _SYS_RESOURCE_H
+
 #include <sys/types.h>
 // this is from musl
 struct rusage {
@@ -20,3 +23,5 @@ struct rusage {
 	long	ru_nivcsw;
 	long    __reserved[16];
 };
+
+#endif

@@ -1,5 +1,5 @@
-#ifndef __UNISTD_H
-#define __UNISTD_H
+#ifndef _UNISTD_H
+#define _UNISTD_H
 #include <sys/types.h>
 _Noreturn void _exit(int);
 

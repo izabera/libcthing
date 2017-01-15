@@ -1,5 +1,5 @@
-#ifndef __LIMITS_H
-#define __LIMITS_H
+#ifndef _LIMITS_H
+#define _LIMITS_H
 
 // some of this is from musl
 

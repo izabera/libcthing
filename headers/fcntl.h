@@ -1,8 +1,9 @@
 #ifndef __FCNTL_H
 #define __FCNTL_H
-long open(const char *, int, mode_t);
+long __open(const char *, int, mode_t);
+long open(const char *, int, ...);
 #define __first(a, ...) a
-#define open(path, flags, ...) open(path, flags, __first(__VA_ARGS__+0))
+#define open(path, flags, ...) __open(path, flags, __first(__VA_ARGS__+0))
 
 // all of this is stolen from musl
 

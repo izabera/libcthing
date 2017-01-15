@@ -7,7 +7,7 @@ libc: gcc/libc.a
 gccwrap: gcc/gccwrap
 
 obj/%.o: lib/%.c
-	gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -nostartfiles -nostdinc lib/$*.c -o $@ -c -Os -I. -Iheaders -Wall -Wextra
+	gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -nostartfiles -nostdinc -Os -I. -Iheaders -Wall -Wextra lib/$*.c -o $@ -c
 
 gcc/libc.a: $(objects)
 	ar rcs gcc/libc.a obj/*.o

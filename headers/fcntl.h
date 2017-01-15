@@ -1,7 +1,6 @@
 #ifndef __FCNTL_H
 #define __FCNTL_H
 long __open(const char *, int, mode_t);
-long open(const char *, int, ...);
 #define __first(a, ...) a
 #define open(path, flags, ...) __open(path, flags, __first(__VA_ARGS__+0))
 

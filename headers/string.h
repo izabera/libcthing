@@ -33,4 +33,8 @@ size_t strcspn(const char *s, const char *accept);
 char *strpbrk(const char *s, const char *accept);
 void *memfrob(void *s, size_t n);
 char *strfry(char *s);
+
+static inline long ffsl(long i) { return __builtin_ffsl(i); }
+static inline long ffsll(long i) { return __builtin_ffsl(i); }
+
 #endif

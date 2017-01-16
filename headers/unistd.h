@@ -31,6 +31,9 @@ long fsync(int);
 gid_t getgid(void);
 uid_t getuid(void);
 
+long setgid(gid_t);
+long setuid(uid_t);
+
 pid_t getpid(void);
 pid_t getppid(void);
 
@@ -39,8 +42,19 @@ uid_t geteuid(void);
 
 pid_t getsid(pid_t);
 
+pid_t getpgid(pid_t);
+long setpgid(pid_t, pid_t);
+
+pid_t setsid(void);
+
+static inline pid_t setpgrp(void) { return setpgid(0, 0); }
+static inline pid_t getpgrp(void) { return getpgid(0); }
+
 long setregid(gid_t, gid_t);
 long setreuid(uid_t, uid_t);
+
+long setresuid(uid_t, uid_t, uid_t);
+long setresgid(uid_t, uid_t, uid_t);
 
 /* Under glibc 2.0 seteuid(euid) is equivalent to setreuid(-1, euid) and hence
  * may change the saved set-user-ID.  Under glibc 2.1 and later it is
@@ -51,15 +65,6 @@ long setreuid(uid_t, uid_t);
 
 static inline long setegid(gid_t id) { return setresgid(-1, id, -1); }
 static inline long seteuid(uid_t id) { return setresuid(-1, id, -1); }
-
-long setgid(gid_t);
-long setpgid(pid_t, pid_t);
-
-static inline pid_t setpgrp(void) { return setpgid(0, 0); }
-static inline pid_t getpgrp(void) { return getpgid(0); }
-
-pid_t setsid(void);
-long setuid(uid_t);
 
 
 
@@ -116,7 +121,6 @@ int          gethostname(char *, size_t);
 char        *getlogin(void);
 int          getlogin_r(char *, size_t);
 int          getopt(int, char * const [], const char *);
-pid_t        getpgid(pid_t);
 pid_t        getpgrp(void);
 int          isatty(int);
 int          lchown(const char *, uid_t, gid_t);

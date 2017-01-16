@@ -22,7 +22,47 @@ static inline long execvp(const char *path, char *const argv[]) { return execvpe
 #define execlp(file, ...)  execvp(file, (char*[]) { __VA_ARGS__ })
 
 long fchdir(int);
+long fdatasync(int);
 long fork(void);
+long fsync(int);
+
+
+
+gid_t getgid(void);
+uid_t getuid(void);
+
+pid_t getpid(void);
+pid_t getppid(void);
+
+gid_t getegid(void);
+uid_t geteuid(void);
+
+pid_t getsid(pid_t);
+
+long setregid(gid_t, gid_t);
+long setreuid(uid_t, uid_t);
+
+/* Under glibc 2.0 seteuid(euid) is equivalent to setreuid(-1, euid) and hence
+ * may change the saved set-user-ID.  Under glibc 2.1 and later it is
+ * equivalent to setresuid(-1, euid, -1) and hence does not change the saved
+ * set-user-ID.  Analogous remarks hold for setegid(), with the difference that
+ * the change in implementation from setregid(-1, egid) to setresgid(-1, egid,
+ * -1) occurred in glibc 2.2 or 2.3 (depending on the hardware architecture). */
+
+static inline long setegid(gid_t id) { return setresgid(-1, id, -1); }
+static inline long seteuid(uid_t id) { return setresuid(-1, id, -1); }
+
+long setgid(gid_t);
+long setpgid(pid_t, pid_t);
+
+static inline pid_t setpgrp(void) { return setpgid(0, 0); }
+static inline pid_t getpgrp(void) { return getpgid(0); }
+
+pid_t setsid(void);
+long setuid(uid_t);
+
+
+
 long link(const char *, const char *);
 long lseek(int, off_t, int);
 long pause(void);
@@ -45,6 +85,8 @@ long usleep(useconds_t);
 
 void swab(const void *restrict, void *restrict, ssize_t);
 long symlink(const char *, const char *);
+void sync(void);
+long syncfs(int);
 
 long tee(int, int, size_t, unsigned int);
 
@@ -64,15 +106,10 @@ void         encrypt(char [64], int);
 int          faccessat(int, const char *, int, int);
 int          fchown(int, uid_t, gid_t);
 int          fchownat(int, const char *, uid_t, gid_t, int);
-int          fdatasync(int);
 int          fexecve(int, char *const [], char *const []);
 long         fpathconf(int, int);
-int          fsync(int);
 int          ftruncate(int, off_t);
 char        *getcwd(char *, size_t);
-gid_t        getegid(void);
-uid_t        geteuid(void);
-gid_t        getgid(void);
 int          getgroups(int, gid_t []);
 long         gethostid(void);
 int          gethostname(char *, size_t);
@@ -81,10 +118,6 @@ int          getlogin_r(char *, size_t);
 int          getopt(int, char * const [], const char *);
 pid_t        getpgid(pid_t);
 pid_t        getpgrp(void);
-pid_t        getpid(void);
-pid_t        getppid(void);
-pid_t        getsid(pid_t);
-uid_t        getuid(void);
 int          isatty(int);
 int          lchown(const char *, uid_t, gid_t);
 int          linkat(int, const char *, int, const char *, int);
@@ -95,17 +128,7 @@ ssize_t      pread(int, void *, size_t, off_t);
 ssize_t      pwrite(int, const void *, size_t, off_t);
 ssize_t      readlink(const char *restrict, char *restrict, size_t);
 ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
-int          setegid(gid_t);
-int          seteuid(uid_t);
-int          setgid(gid_t);
-int          setpgid(pid_t, pid_t);
-pid_t        setpgrp(void);
-int          setregid(gid_t, gid_t);
-int          setreuid(uid_t, uid_t);
-pid_t        setsid(void);
-int          setuid(uid_t);
 int          symlinkat(const char *, int, const char *);
-void         sync(void);
 long         sysconf(int);
 pid_t        tcgetpgrp(int);
 int          tcsetpgrp(int, pid_t);

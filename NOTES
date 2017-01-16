@@ -3,3 +3,6 @@ if the header is included the code is inlined
 otherwise, the actual function is called
 
 some variadic functions are implemented as macros
+example: open
+- if fcntl.h is included, it calls directly __open
+- if you write your own open() prototype you're an idiot, but it will work

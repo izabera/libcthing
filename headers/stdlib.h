@@ -30,13 +30,13 @@ void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, 
 
 int system(const char *);
 
-void *memalign(size_t alignment, size_t size);
+void *memalign(size_t alignment, size_t size) __attribute__((malloc,alloc_size(2),alloc_align(1)));
 
 #ifdef __HIDE_INLINES
-void *aligned_alloc(size_t, size_t);
-void *valloc(size_t);
-void *pvalloc(size_t);
-int posix_memalign(void **, size_t, size_t);
+void *aligned_alloc(size_t, size_t)           __attribute__((malloc,alloc_size(2),alloc_align(1)));
+void *valloc(size_t)                          __attribute__((malloc,alloc_size(1),assume_aligned(4096)));
+void *pvalloc(size_t)                         __attribute__((malloc,alloc_size(1),assume_aligned(4096)));
+int posix_memalign(void **, size_t, size_t)   __attribute__((malloc,alloc_size(3),alloc_align(2)));
 #else
 #include <limits.h>
 #include <errno.h>
@@ -53,28 +53,33 @@ static inline int posix_memalign(void **p, size_t align, size_t size) {
 }
 #endif
 
-double          strtod(const char *restrict, char **restrict);
-float           strtof(const char *restrict, char **restrict);
-long            strtol(const char *restrict, char **restrict, int);
-long double    strtold(const char *restrict, char **restrict);
-long long      strtoll(const char *restrict, char **restrict, int);
-unsigned long  strtoul(const char *restrict, char **restrict, int);
-unsigned long strtoull(const char *restrict, char **restrict, int);
+void *malloc(size_t)          __attribute__((assume_aligned(16),alloc_size(1),malloc));
+void *realloc(void *, size_t) __attribute__((assume_aligned(16),alloc_size(2)));
+void *calloc(size_t, size_t)  __attribute__((assume_aligned(16),alloc_size(1,2),malloc));
+void free(void *);
+
+#define realloc(x,y) (__builtin_constant_p(x) && x == 0 ? malloc(y) : realloc(x,y))
+
+double          strtod(const char *restrict, char **restrict)      __attribute__((pure));
+float           strtof(const char *restrict, char **restrict)      __attribute__((pure));
+long            strtol(const char *restrict, char **restrict, int) __attribute__((pure));
+long double    strtold(const char *restrict, char **restrict)      __attribute__((pure));
+long long      strtoll(const char *restrict, char **restrict, int) __attribute__((pure));
+unsigned long  strtoul(const char *restrict, char **restrict, int) __attribute__((pure));
+unsigned long strtoull(const char *restrict, char **restrict, int) __attribute__((pure));
 static inline int    atoi(const char *s) { return strtol(s, 0, 10); }
 static inline long   atol(const char *s) { return strtol(s, 0, 10); }
 static inline long  atoll(const char *s) { return strtol(s, 0, 10); }
 static inline double atof(const char *s) { return strtod(s, 0); }
 
-char *getenv(const char *);
+char *getenv(const char *) __attribute__((pure));
 
 long          a64l(const char *);
 void          abort(void);
 
 
-void         *calloc(size_t, size_t);
 double        drand48(void);
 double        erand48(unsigned short [3]);
-void          free(void *);
 int           getsubopt(char **, char *const *, char **);
 int           grantpt(int);
 char         *initstate(unsigned, char *, size_t);
@@ -82,7 +87,6 @@ long          jrand48(unsigned short [3]);
 char         *l64a(long);
 void          lcong48(unsigned short [7]);
 long          lrand48(void);
-void         *malloc(size_t);
 int           mblen(const char *, size_t);
 //size_t        mbstowcs(wchar_t *restrict, const char *restrict, size_t);
 //int           mbtowc(wchar_t *restrict, const char *restrict, size_t);
@@ -98,7 +102,6 @@ void          qsort(void *, size_t, size_t, int (*)(const void *,
 int           rand(void);
 int           rand_r(unsigned *);
 long          random(void);
-void         *realloc(void *, size_t);
 char         *realpath(const char *restrict, char *restrict);
 unsigned short *seed48(unsigned short [3]);
 int           setenv(const char *, const char *, int);

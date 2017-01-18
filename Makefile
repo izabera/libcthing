@@ -17,13 +17,14 @@ gcc/gccwrap:
 	echo 'gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
-test: gccwrap libc
+test: gccwrap libc test.c
 	gcc/gccwrap test.c -o test -flto -Os
 
 stripped: test
 	strip --remove-section=.comment --remove-section=.note --strip-all test
+	wc -c test; size test
 
 clean:
 	rm -f gcc/* obj/* lib/* 2>/dev/null || :
 
-.PHONY: clean stripped test libc gccwrap
+.PHONY: clean stripped libc gccwrap

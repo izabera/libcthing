@@ -327,6 +327,6 @@
 //#define membarrier 324
 //#define mlock2 325
 //#define copy_file_range 326
-//#define preadv2 327
-//#define pwritev2 328
+#define SYS_preadv2                327
+#define SYS_pwritev2               328
 #endif

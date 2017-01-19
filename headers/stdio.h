@@ -12,9 +12,11 @@ int fseek(FILE *stream, long offset, int whence);
 long ftell(FILE *stream);
 void rewind(FILE *stream);
 
-int rename(const char *, const char *);
-int renameat(int, const char *, int, const char *);
-int renameat2(int, const char *, int, const char *, unsigned int);
+long rename(const char *, const char *);
+long renameat(int, const char *, int, const char *);
+long renameat2(int, const char *, int, const char *, unsigned int);
+
+long remove(const char *);
 
 //int fgetpos(FILE *stream, fpos_t *pos);
 //int fsetpos(FILE *stream, const fpos_t *pos);
@@ -72,7 +74,6 @@ int      putchar(int);
 int      putc_unlocked(int, FILE *);
 int      putchar_unlocked(int);
 int      puts(const char *);
-int      remove(const char *);
 void     rewind(FILE *);
 //int      scanf(const char *restrict, ...);
 void     setbuf(FILE *restrict, char *restrict);

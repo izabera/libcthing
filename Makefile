@@ -17,7 +17,7 @@ gcc/gccwrap:
 	echo 'gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
-test: gccwrap libc test.c
+test: gcc/gccwrap gcc/libc.a test.c
 	gcc/gccwrap test.c -o test -flto -Os
 
 stripped: test

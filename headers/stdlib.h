@@ -30,13 +30,17 @@ void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, 
 
 int system(const char *);
 
+
+
+
+// mallocs
 void *memalign(size_t alignment, size_t size) __attribute__((malloc,alloc_size(2),alloc_align(1)));
 
 #ifdef __HIDE_INLINES
 void *aligned_alloc(size_t, size_t)           __attribute__((malloc,alloc_size(2),alloc_align(1)));
 void *valloc(size_t)                          __attribute__((malloc,alloc_size(1),assume_aligned(4096)));
 void *pvalloc(size_t)                         __attribute__((malloc,alloc_size(1),assume_aligned(4096)));
-int posix_memalign(void **, size_t, size_t)   __attribute__((malloc,alloc_size(3),alloc_align(2)));
+int posix_memalign(void **, size_t, size_t)   __attribute__((alloc_size(3),alloc_align(2)));
 #else
 #include <limits.h>
 #include <errno.h>
@@ -60,17 +64,51 @@ void free(void *);
 
 #define realloc(x,y) (__builtin_constant_p(x) && x == 0 ? malloc(y) : realloc(x,y))
 
-double          strtod(const char *restrict, char **restrict)      __attribute__((pure));
-float           strtof(const char *restrict, char **restrict)      __attribute__((pure));
+
+
+
+
+// strto*
+float           strtof(const char *restrict, char **restrict) __attribute__((pure));
+double          strtod(const char *restrict, char **restrict) __attribute__((pure));
+long double    strtold(const char *restrict, char **restrict) __attribute__((pure));
+
+typedef union { long s; unsigned long u; } __longtype;
+typedef enum { __positive, __negative, __wantsigned, __wantunsigned } __signtype;
+__longtype __strtol(const char *restrict, char **restrict, int, __signtype) __attribute__((pure));
+
+#ifdef __HIDE_INLINES
 long            strtol(const char *restrict, char **restrict, int) __attribute__((pure));
-long double    strtold(const char *restrict, char **restrict)      __attribute__((pure));
-long long      strtoll(const char *restrict, char **restrict, int) __attribute__((pure));
 unsigned long  strtoul(const char *restrict, char **restrict, int) __attribute__((pure));
-unsigned long strtoull(const char *restrict, char **restrict, int) __attribute__((pure));
-static inline int    atoi(const char *s) { return strtol(s, 0, 10); }
-static inline long   atol(const char *s) { return strtol(s, 0, 10); }
-static inline long  atoll(const char *s) { return strtol(s, 0, 10); }
+int    atoi(const char *s) __attribute__((pure));
+long   atol(const char *s) __attribute__((pure));
+long  atoll(const char *s) __attribute__((pure));
+double atof(const char *s) __attribute__((pure));
+         long  strtoll(const char *restrict x, char **restrict y, int z) __attribute__((pure));
+unsigned long strtoull(const char *restrict x, char **restrict y, int z) __attribute__((pure));
+#else
+
+static inline          long  strtol(const char *restrict nptr, char **restrict endptr, int base) {
+  return __strtol(nptr, endptr, base, __wantsigned).s;
+}
+static inline unsigned long strtoul(const char *restrict nptr, char **restrict endptr, int base) {
+  return __strtol(nptr, endptr, base, __wantunsigned).u;
+}
+
+static inline int    atoi(const char *s) { return strtol(s, 0, 10); };
+static inline long   atol(const char *s) { return strtol(s, 0, 10); };
+static inline long  atoll(const char *s) { return strtol(s, 0, 10); };
 static inline double atof(const char *s) { return strtod(s, 0); }
+static inline          long  strtoll(const char *restrict x, char **restrict y, int z) { return  strtol(x, y, z); }
+static inline unsigned long strtoull(const char *restrict x, char **restrict y, int z) { return strtoul(x, y, z); }
+#endif
+
+
+
+
+
+
+
 
 char *getenv(const char *) __attribute__((pure));
 

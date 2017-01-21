@@ -10,4 +10,9 @@ static inline imaxdiv_t imaxdiv(intmax_t num, intmax_t den) {
   return (imaxdiv_t){ num / den, num % den };
 }
 
+#include <stdlib.h>
+static inline  intmax_t strtoimax(const char *nptr, char **endptr, int base) { return  strtol(nptr, endptr, base); }
+static inline uintmax_t strtoumax(const char *nptr, char **endptr, int base) { return strtoul(nptr, endptr, base); }
+
+
 #endif

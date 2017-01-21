@@ -2,6 +2,7 @@
 #define _STRING_H
 #include <sys/types.h>
 void *memccpy(void *restrict dest, const void *restrict src, int c, size_t n) __attribute__((nonnull,returns_nonnull));
+void *mempcpy(void *restrict dest, const void *restrict src, size_t n)        __attribute__((nonnull,returns_nonnull));
 void *memchr(const void *s, int c, size_t n)                                  __attribute__((nonnull,pure));
 void *memrchr(const void *s, int c, size_t n)                                 __attribute__((nonnull,pure));
 void *rawmemchr(const void *s, int c)                                         __attribute__((nonnull,returns_nonnull));

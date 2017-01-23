@@ -6,5 +6,5 @@
 
 void exit(int);
 void _exit(int);
-void weakexit(int status) { _exit(status); }
+static void weakexit(int status) { _exit(status); }
 weak(exit);

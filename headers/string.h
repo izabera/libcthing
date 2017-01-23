@@ -35,6 +35,10 @@ char *strpbrk(const char *s, const char *accept)                              __
 void *memfrob(void *s, size_t n)                                              __attribute__((nonnull,returns_nonnull,pure));
 char *strfry(char *s)                                                         __attribute__((nonnull,returns_nonnull,pure));
 
+                      // void * or char * ?
+#define strdupa(x)    ({ const char *_x = x; strcpy(__builtin_alloca(strlen(_x)+1), _x); })
+#define strndupa(x,s) ({ const char *_x = x; size_t _s = strnlen(_x,s); char *_tmp = __builtin_alloca(_s); _tmp[_s-1] = 0; memcpy(_tmp, _x, _s-1); })
+
 static inline long ffsl(long i) { return __builtin_ffsl(i); }
 static inline long ffsll(long i) { return __builtin_ffsl(i); }
 

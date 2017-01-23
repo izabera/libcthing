@@ -106,6 +106,15 @@ static inline unsigned long strtoull(const char *restrict x, char **restrict y, 
 
 
 
+void qsort_r(void *, size_t, size_t, int (*)(const void *, const void *, void *), void *);
+#ifdef __HIDE_INLINES
+void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+#else
+static inline void qsort(void *base, size_t nmemb, size_t size, int (*cmp)(const void *, const void *)) {
+  qsort_r(base, nmemb, size, (int (*)(const void *, const void *, void *))cmp, NULL);
+}
+#endif
+
 
 
 
@@ -135,8 +144,6 @@ int           posix_memalign(void **, size_t, size_t);
 int           posix_openpt(int);
 char         *ptsname(int);
 int           putenv(char *);
-void          qsort(void *, size_t, size_t, int (*)(const void *,
-                  const void *));
 int           rand(void);
 int           rand_r(unsigned *);
 long          random(void);

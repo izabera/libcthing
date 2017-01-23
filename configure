@@ -1,5 +1,5 @@
 #!/bin/sh -e
 cd lib
 ln -fs syscalls/* ctype/* string/* stdlib/* stdio/* strings/* inttypes/* \
-       unistd/* time/* byteswap/* search/* wait/* .
+       unistd/* time/* byteswap/* search/* wait/* weak/* .
 echo done, run make

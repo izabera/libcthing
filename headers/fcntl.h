@@ -1,5 +1,6 @@
 #ifndef _FCNTL_H
 #define _FCNTL_H
+#include <sys/types.h>
 long __open(const char *, int, mode_t);
 #define __first(a, ...) a
 #define open(path, flags, ...) __open(path, flags, __first(__VA_ARGS__+0))

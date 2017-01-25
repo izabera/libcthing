@@ -15,3 +15,26 @@ build programs with it
 ----------------------
 
 gcc/gccwrap myprogram.c -o myprogram
+
+
+
+
+
+what works so far
+-----------------
+ctype
+errno
+stdint/inttypes
+most of string.h
+hsearch/bsearch/lsearch
+qsort
+strtol
+small parts of stdio
+most syscalls
+
+
+what needs to be improved
+-------------------------
+malloc
+your face
+everything else

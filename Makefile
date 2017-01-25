@@ -7,7 +7,7 @@ libc: gcc/libc.a
 gccwrap: gcc/gccwrap
 
 obj/%.o: lib/%.c
-	gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -nostartfiles -nostdinc -Os -I. -Iheaders -Wall -Wextra lib/$*.c -o $@ -c
+	gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -nostartfiles -nostdinc -Os -I. -Iheaders -Wall -Wextra -c -ffunction-sections lib/$*.c -o $@
 
 gcc/libc.a: $(objects)
 	# make sure that weak objects always come first

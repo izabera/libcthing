@@ -1,8 +1,7 @@
 #include <stdio.h>
 typedef struct __FILE {
-  char buf[BUFSIZ];
-  char **ptr;
-  size_t *size, used, pos;
+  unsigned char *ptr;
+  size_t size, used, pos;
   mode_t mode;
   char bufmode,  // 'l' line 'f' fully 'n' no
        error,    // 0 fine 'e' eof 'u' unknown
@@ -10,10 +9,4 @@ typedef struct __FILE {
   int fd;
 } FILE;
 
-FILE _stdin  = { .fd = 0, .bufmode = 'f' },
-     _stdout = { .fd = 1, .bufmode = 'f' },
-     _stderr = { .fd = 2, .bufmode = 'f' },
-     *stdout = &_stdout,
-     *stdin  = &_stdin ,
-     *stderr = &_stderr;
 mode_t __strtomode(const char *);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <search.h>
+#include <stdio.h>
 
 static void writestr(const char *str) { write(1, str, strlen(str)); }
 
@@ -18,39 +19,42 @@ static char *upperstring(char *str) {
 static int cmpchar(const void *a, const void *b) { return *(char *)a - *(char *)b; }
 
 int main(int argc, char *argv[]) {
-  /*system("env");*/
+  system("env");
 
-  /*writestr("this is main\n");*/
-  /*writestr("my argv[]:\n");*/
-  /*for (int i = 0; i < argc; i++) {*/
-    /*writestr(upperstring(argv[i]));*/
-    /*writestr("\n");*/
-  /*}*/
+  writestr("this is main\n");
+  writestr("my argv[]:\n");
+  for (int i = 0; i < argc; i++) {
+    writestr(upperstring(argv[i]));
+    writestr("\n");
+  }
 
-  /*if (unlink("foobar") == -1)*/
-    /*writestr("unlink failed\n");*/
-  /*else*/
-    /*writestr("unlink succeeded\n");*/
+  if (unlink("foobar") == -1)
+    writestr("unlink failed\n");
+  else
+    writestr("unlink succeeded\n");
 
-  /*hcreate(100);*/
-  /*ENTRY e = { "foo", "bar" };*/
-  /*hsearch(e, ENTER);*/
-  /*writestr(hsearch(e, FIND) ? "found\n" : "nope\n");*/
-  /*e.key = "meow";*/
-  /*writestr(hsearch(e, FIND) ? "found\n" : "nope\n");*/
+  hcreate(100);
+  ENTRY e = { "foo", "bar" };
+  hsearch(e, ENTER);
+  writestr(hsearch(e, FIND) ? "found\n" : "nope\n");
+  e.key = "meow";
+  writestr(hsearch(e, FIND) ? "found\n" : "nope\n");
 
-  /*char *path = getenv("PATH");*/
-  /*if (path) {*/
-    /*writestr(path);*/
-    /*writestr("\n");*/
-  /*}*/
-  /*else writestr("no PATH\n");*/
+  char *path = getenv("PATH");
+  if (path) {
+    writestr(path);
+    writestr("\n");
+  }
+  else writestr("no PATH\n");
 
   char string[] = "foobarbazbat\n";
   qsort(string, sizeof string -2, 1, cmpchar);
   writestr(string);
 
-  /*atexit(atexit_func);*/
-  /*writestr("_exit(errno)\n");*/
-  /*return errno;*/
+  // finally stdio sorta works, yay!
+  puts("hi mom");
+
+  atexit(atexit_func);
+  writestr("_exit(errno)\n");
+  return errno;
 }

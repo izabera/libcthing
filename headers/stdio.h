@@ -5,7 +5,10 @@
 #define BUFSIZ 4096
 #include <sys/types.h>
 #include <limits.h>
+
 typedef struct __FILE FILE;
+extern FILE *stdin, *stdout, *stderr;
+
 int fflush(FILE *stream);
 
 int fseek(FILE *stream, long offset, int whence);

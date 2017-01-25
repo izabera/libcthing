@@ -1,3 +1,4 @@
 test
 lib/*.[ch]
+tests/bin/*
 tags

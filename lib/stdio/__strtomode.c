@@ -1,6 +1,6 @@
-#include "stdio.h"
-#include <string.h>
+/*#include <string.h>*/
 #include <fcntl.h>
+#include <errno.h>
 
 #if 0
 mode_t __strtomode1(const char *mode) {
@@ -48,7 +48,7 @@ mode_t __strtomode3(const char *mode) {
 
 // this is the smallest of the 3
 mode_t __strtomode(const char *mode) {
-#ifdef check_empty_mode
+#ifndef no_check_empty_mode
   if (!*mode) {
     errno = EINVAL;
     return -1;

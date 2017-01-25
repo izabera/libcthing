@@ -1,6 +1,8 @@
 all: libc gccwrap
 
 objects = $(addprefix obj/,$(addsuffix .o,$(notdir $(basename $(wildcard lib/*.c)))))
+testssrc = $(addprefix tests/,$(notdir $(basename $(wildcard tests/*.c))))
+tests = $(addprefix tests/bin/,$(notdir $(basename $(wildcard tests/*.c))))
 
 libc: gcc/libc.a
 
@@ -20,14 +22,20 @@ gcc/gccwrap:
 	echo 'gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
-test: gcc/gccwrap gcc/libc.a test.c
-	gcc/gccwrap test.c -o test -flto -Os
+tests/bin/%: tests/%.c gcc/libc.a
+	gcc/gccwrap -flto -Os tests/$*.c -o $@
 
-stripped: test
-	strip --remove-section=.comment --remove-section=.note --strip-all test
-	wc -c test; size test
+tests: gcc/gccwrap gcc/libc.a $(tests)
+
+stripped-tests: tests
+	cd tests/bin && { \
+		for test in *; do \
+			strip --remove-section=.comment --remove-section=.note --strip-all $$test; \
+		done; \
+		wc -c *; size *; \
+	}
 
 clean:
-	rm -f gcc/* obj/* lib/* 2>/dev/null || :
+	rm -f gcc/* obj/* lib/* tests/bin/* 2>/dev/null || :
 
-.PHONY: clean stripped libc gccwrap
+.PHONY: clean stripped-tests libc gccwrap tests

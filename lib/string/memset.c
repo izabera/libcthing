@@ -26,7 +26,7 @@ void *memset(void *s, int c, size_t n) {
 
 void *memset(void *dst, int c, size_t size) {
   void *dest = dst;
-  asm volatile("cld; rep stosb"
+  asm volatile("rep stosb"
               :"=D"(dst)
               :"0"(dst), "a"(c), "c"(size)
               :"memory", "cc");
@@ -38,10 +38,9 @@ void *memset(void *dst, int c, size_t size) {
  *   0: 49 89 f8              mov    %rdi,%r8          // push %rdi would be 1 byte 
  *   3: 89 f0                 mov    %esi,%eax
  *   5: 48 89 d1              mov    %rdx,%rcx
- *   8: fc                    cld    
- *   9: f3 aa                 rep stos %al,%es:(%rdi)
- *   b: 4c 89 c0              mov    %r8,%rax          // pop %rax would be 1 byte
- *   e: c3                    retq  
+ *   8: f3 aa                 rep stos %al,%es:(%rdi)
+ *   a: 4c 89 c0              mov    %r8,%rax          // pop %rax would be 1 byte
+ *   d: c3                    retq
  *
  * todo: how to force gcc to push/pop rather than use registers?
  */

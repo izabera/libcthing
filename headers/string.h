@@ -14,7 +14,6 @@ char *stpncpy(char *restrict, const char *restrict, size_t)        __attribute__
 char *stpcpy(char *restrict, const char *restrict)                 __attribute__((nonnull,returns_nonnull));
 char *strcpy(char *restrict, const char *restrict)                 __attribute__((nonnull,returns_nonnull));
 char *strncpy(char *restrict, const char *restrict, size_t)        __attribute__((nonnull,returns_nonnull));
-size_t strlen(const char *)                                        __attribute__((nonnull,pure));
 char *strcat(char *restrict, const char *restrict)                 __attribute__((nonnull,returns_nonnull));
 char *strncat(char *restrict, const char *restrict, size_t)        __attribute__((nonnull,returns_nonnull));
 char *strchr(const char *, int)                                    __attribute__((nonnull,pure));
@@ -35,6 +34,12 @@ char *strpbrk(const char *, const char *)                          __attribute__
 void *memfrob(void *, size_t)                                      __attribute__((nonnull,returns_nonnull,pure));
 char *strfry(char *)                                               __attribute__((nonnull,returns_nonnull,pure));
 
+#ifdef __HIDE_INLINES
+size_t strlen(const char *)                                        __attribute__((nonnull,pure));
+#else
+static inline size_t strlen(const char *s) { return strnlen(s, -1); }
+#endif
+
                       // void * or char * ?
 #define strdupa(x)    ({ const char *_x = x; strcpy(__builtin_alloca(strlen(_x)+1), _x); })
 #define strndupa(x,s) ({ const char *_x = x; size_t _s = strnlen(_x,s); char *_tmp = __builtin_alloca(_s); _tmp[_s-1] = 0; memcpy(_tmp, _x, _s-1); })
@@ -45,6 +50,14 @@ int ffsll(long);
 #else
 static inline int ffsl(long i) { return __builtin_ffsl(i); }
 static inline int ffsll(long i) { return __builtin_ffsl(i); }
+#endif
+
+char *strtok_r(char *, const char *, char **);
+#ifdef __HIDE_INLINES
+char *strtok(char *, const char *);
+#else
+extern char *__strtok;
+static inline char *strtok(char *str, const char *delim) { return strtok_r(str, delim, &__strtok); }
 #endif
 
 #endif

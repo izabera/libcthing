@@ -27,9 +27,9 @@ void *memset(void *s, int c, size_t n) {
 void *memset(void *dst, int c, size_t size) {
   void *dest = dst;
   asm volatile("rep stosb"
-              :"=D"(dst)
-              :"0"(dst), "a"(c), "c"(size)
-              :"memory", "cc");
+              :"+D"(dst), "+c"(size)
+              :"a"(c)
+              :"memory");
   return dest;
 }
 

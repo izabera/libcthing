@@ -25,8 +25,8 @@ void *memcpy(void *dest, const void *src, size_t n) {
 void *memcpy(void *dest, const void *src, size_t n) {
   void *ret = dest;
   asm volatile("rep movsb"
-              :"=D"(dest)
-              :"0"(dest), "S"(src), "c"(n)
-              :"memory", "cc");
+              :"+D"(dest), "+S"(src), "+c"(n)
+              :
+              :"memory");
   return ret;
 }

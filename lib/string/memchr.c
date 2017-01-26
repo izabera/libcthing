@@ -12,17 +12,17 @@ void *memchr(const void *s, int c, size_t n) {
 
 
 void *memchr(const void *s, int c, size_t n) {
+  void *ret;
   // this is annoying/impossible to do with asm goto because it can't have outputs
   asm volatile("jrcxz setnul\n"
                "repne scasb\n"
-               "cmpb %%al,-1(%%rdi)\n"
                "je endasm\n"
                "setnul:\n"
                "mov $1,%%edi\n"
                "endasm:\n"
-               "dec %%rdi\n"
-              :"+D"(s), "+c"(n)
+               "lea -1(%%rdi),%%rax\n"
+              :"+D"(s), "+c"(n), "=a"(ret)
               :"a"(c)
               :"cc");
-  return (void *)s;
+  return ret;
 }

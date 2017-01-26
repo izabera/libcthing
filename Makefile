@@ -19,7 +19,7 @@ gcc/libc.a: $(objects)
 
 gcc/gccwrap:
 	echo '#!/bin/sh' > gcc/gccwrap
-	echo 'gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-builtin -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
+	echo 'gcc -g -fno-unwind-tables -fno-asynchronous-unwind-tables -Wno-builtin-declaration-mismatch -static -nostdinc "$$@" $(shell pwd)/gcc/libc.a -I$(shell pwd)/headers -Wl,-gc-sections -lgcc -nostdlib' >> gcc/gccwrap
 	chmod +x gcc/gccwrap
 
 tests/bin/%: tests/%.c gcc/libc.a

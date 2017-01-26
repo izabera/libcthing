@@ -6,3 +6,37 @@ some variadic functions are implemented as macros
 example: open
 - if fcntl.h is included, it calls directly __open
 - if you write your own open() prototype you're an idiot, but it will work
+
+
+
+on portability
+--------------
+this stuff depends on
+- linux
+  no dependency on /proc or any filesystem structure yet
+  just the kernel interface and syscalls
+- x86_64
+  this started as an experiment with the 64bit sysv abi
+  some things depend on the calling convention, for instance most of the
+  syscalls are just lightweight wrappers
+  asm() is sometimes used to make things faster or smaller
+  so far there's no sse code
+- gcc
+  - clang doesn't care about size at all and happily unrolls loops at -Os
+  - stdarg.h is implemented via __builtin_va_*
+  - alloca is implemented via __builtin_alloca
+  - strndupa is implemented with a macro that uses ({ })
+  - gcc defines a bunch of macros like __SIZE_MAX__ or __UINT64_TYPE__ that are
+    used in limits.h, stdint.h and sys/types.h
+    these can be replaced by an actual configure script
+  - so far all the __attributes__ can be #define'd away and there shouldn't be
+    any loss in functionality, but stuff like weak aliases is useful
+  - various __builtin_* functions are used here and there because they help
+    (and sometimes they're the only way) to generate good asm from c
+    these could be implemented via asm() but that forces gcc to not inline
+    stuff that otherwise would be inlined
+    - strtol uses builtins to check for overflow
+    - bswap* functions use __builtin_bswap*
+    - ffs* functions use __builtin_ffs*
+    - hcreate uses __builtin_clz
+    - realloc(x, y) is a macro that checks if x is 0 with __builtin_constant_p

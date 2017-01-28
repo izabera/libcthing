@@ -66,6 +66,7 @@ static block *getblock(size_t size) {
 static void *mmapmalloc(size_t size) {
   block *x = mmap(0, size+sizeof(block), PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
   if (x != MAP_FAILED) x++->size = size+sizeof(block);
+  else x = 0;
   return x;
 }
 

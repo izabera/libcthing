@@ -171,6 +171,7 @@ size_t malloc_usable_size(void *mem) {
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
+#if 0
   struct timespec t0, t1, t2;
   clock_gettime(CLOCK_MONOTONIC, &t0);
 
@@ -202,5 +203,60 @@ int main(int argc, char *argv[]) {
   printf("mine: %10zd ns\n",
       (t2.tv_sec * 1000000000 + t2.tv_nsec) -
       (t1.tv_sec * 1000000000 + t1.tv_nsec));
+#endif
+  // test contributed by doug16k
+  // https://gist.github.com/doug65536/bd6f9f3317914f3f7207558e2602811c
+
+  int allocnum = argc > 1 ? atoi(argv[1]) : 1000,
+      allocsiz = argc > 2 ? atoi(argv[2]) : 1000;
+
+  void *blocks[allocnum];
+
+  volatile char *x;
+  struct timespec t0, t1, t2, t3;
+
+  for (int pass = 0; pass < 8; ++pass) {
+
+    srand(1234);
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+    for (int i = 0; i < allocnum; i++) {
+    
+      x = malloc(rand() % allocsiz + 10);
+      blocks[i] = (void*)x;
+      x[3] = 'x';
+      if (rand() % 10 == 0) {
+        free((char *)x);
+        blocks[i] = 0;
+      }
+    }
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    
+    for (int i = 0; i < allocnum; ++i)
+      free(blocks[i]);
+    
+    srand(1234);
+    clock_gettime(CLOCK_MONOTONIC, &t2);
+    for (int i = 0; i < allocnum; i++) {
+      x = mymalloc(rand() % allocsiz + 10);
+      blocks[i] = (void*)x;
+      x[3] = 'x';
+      if (rand() % 10 == 0) {
+        myfree((char *)x);
+        blocks[i] = 0;
+      }
+    }
+    clock_gettime(CLOCK_MONOTONIC, &t3);
+    
+    for (int i = 0; i < allocnum; ++i)
+      myfree(blocks[i]);
+    
+    printf("time for %d allocations from 10 to %d bytes:\n", allocnum, allocsiz+10);
+    printf("libc: %10zd ns\n",
+        (t1.tv_sec * 1000000000L + t1.tv_nsec) -
+        (t0.tv_sec * 1000000000L + t0.tv_nsec));
+    printf("mine: %10zd ns\n",
+        (t3.tv_sec * 1000000000L + t3.tv_nsec) -
+        (t2.tv_sec * 1000000000L + t2.tv_nsec));
+  }
 }
 #endif

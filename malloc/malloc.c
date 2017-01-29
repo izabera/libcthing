@@ -215,9 +215,9 @@ int main(int argc, char *argv[]) {
   volatile char *x;
   struct timespec t0, t1, t2, t3;
 
+  srand(1234);
   for (int pass = 0; pass < 8; ++pass) {
 
-    srand(1234);
     clock_gettime(CLOCK_MONOTONIC, &t0);
     for (int i = 0; i < allocnum; i++) {
     
@@ -234,7 +234,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < allocnum; ++i)
       free(blocks[i]);
     
-    srand(1234);
     clock_gettime(CLOCK_MONOTONIC, &t2);
     for (int i = 0; i < allocnum; i++) {
       x = mymalloc(rand() % allocsiz + 10);

@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <stdio.h>
 #include <sys/mman.h>
 #include <string.h>
 
@@ -47,12 +48,23 @@ static block *getblock(size_t size) {
     if (blocks[i].next) {
       block *ret = blocks[i].next;
       blocks[i].next = blocks[i].next->next;
+      /*printf("ret->size: %zu %zu\n", ret->size, size);*/
 
       // if it's large enough, split it and put it back
-      if (i > 0 && ret->size > size + sizes[i-1] + 32) {
-        ret->size = sizes[i-1];
-        block *split = (block *)(ret->mem + sizes[i-1]);
-        putblock(split);
+      for (int j = nsizes-1; j >= 0; j--) {
+        if (ret->size >= size + sizes[j] + sizeof(block)*2) {
+          /*printf("%zu %zu %zu\n", size, ret->size, sizes[j]);*/
+
+          // this is still always 16 byte aligned
+          ret->size -= sizes[j] + sizeof(block);
+
+          /*printf("new size:%zu\n", ret->size);*/
+          block *split = (block *)(ret->mem + ret->size);
+          split->size = sizes[j];
+          /*printf("split size:%zu\n", split->size);*/
+          putblock(split);
+          break;
+        }
       }
 
       // todo: find a way to merge blocks when they're freed?
@@ -75,8 +87,10 @@ void *malloc(size_t size) {
   if (size == 0) return 0;
   if (size > sizes[nsizes-1]) return mmapmalloc(size);
 
+  /*printf("<");*/
   block *x = getblock(size);
   if (x) return x->mem;
+  /*printf(">");*/
 
   x = mmap(0, (sizes[nsizes-1]+sizeof(block))*2, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
   if (x != MAP_FAILED) {
@@ -107,7 +121,7 @@ void *calloc(size_t nmemb, size_t size) {
 void free(void *mem) {
   if (!mem) return;
   block *b = mem;
-  if (--b->size > sizes[nsizes-1]) {
+  if ((--b)->size > sizes[nsizes-1]) {
     // large allocations are immediately returned to the system
     munmap(b, b->size);
     return;

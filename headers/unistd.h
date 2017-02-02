@@ -102,6 +102,21 @@ long write(int, const void *, size_t);
 #define SEEK_SET 0
 #define SEEK_CUR 1
 #define SEEK_END 2
+
+
+char *getcwd(char *, size_t);
+char *__getcwd(char *, size_t);
+#define getcwd(x,y) (__builtin_constant_p(x) && x == 0 ? getcwd(x,y) : __getcwd(x,y))
+
+#ifdef __HIDE_INLINES
+char *getwd(char *);
+char *get_current_dir_name(void) __attribute__((assume_aligned(16),malloc));
+#else
+#include <limits.h>
+static inline char *getwd(char *buf) { return __getcwd(buf, PATH_MAX); }
+static inline char *get_current_dir_name(void) { return getcwd(0, PATH_MAX); }
+#endif
+
 int          chown(const char *, uid_t, gid_t);
 size_t       confstr(int, char *, size_t);
 char        *crypt(const char *, const char *);
@@ -114,7 +129,6 @@ int          fchownat(int, const char *, uid_t, gid_t, int);
 int          fexecve(int, char *const [], char *const []);
 long         fpathconf(int, int);
 int          ftruncate(int, off_t);
-char        *getcwd(char *, size_t);
 int          getgroups(int, gid_t []);
 long         gethostid(void);
 int          gethostname(char *, size_t);

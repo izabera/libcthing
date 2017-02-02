@@ -325,7 +325,7 @@
 //#define stub_execveat 322
 //#define userfaultfd 323
 //#define membarrier 324
-//#define mlock2 325
+#define SYS_mlock2                 325
 //#define copy_file_range 326
 #define SYS_preadv2                327
 #define SYS_pwritev2               328

@@ -27,14 +27,16 @@ errno
 stdint/inttypes
 most of string.h
 hsearch/bsearch/lsearch
+malloc
 qsort
 strtol
+rand*
 small parts of stdio
 most syscalls
 
 
 what needs to be improved
 -------------------------
-malloc
+stdio
 your face
 everything else

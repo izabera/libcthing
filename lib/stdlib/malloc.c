@@ -1,5 +1,7 @@
 #include <sys/mman.h>
 #include <string.h>
+#include <limits.h>
+
 
 
 #define s(x) (1<<x)-16
@@ -63,7 +65,7 @@ static block *getblock(size_t size) {
 // use the old dumb malloc for large blocks
 static void *mmapmalloc(size_t size) {
   block *x = mmap(0, size+sizeof(block), PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-  if (x != MAP_FAILED) x++->size = size+sizeof(block);
+  if (x != MAP_FAILED) x++->size = size;
   else x = 0;
   return x;
 }
@@ -142,3 +144,73 @@ size_t malloc_usable_size(void *mem) {
   block *b = mem;
   return --b->size;
 }
+
+
+
+#include <errno.h>
+
+void *memalign(size_t align, size_t size) {
+  if (align & (align-1)) {
+    errno = EINVAL;
+    return NULL;
+  }
+
+  // for now....
+  if (align <= 16)
+    return malloc(size);
+
+  errno = ENOMEM;
+  return NULL;
+
+#if 0
+  if (align <= 16 || // minimum alignment for regular malloc
+      (align <= PAGE_SIZE && size > sizes[nsizes-1])) // this would use mmapmalloc anyway
+    return malloc(size);
+
+  size_t overalloc;
+  if (__builtin_mul_overflow(align, 2, &overalloc) ||
+      __builtin_add_overflow(overalloc, size, &overalloc) ||
+      __builtin_add_overflow(overalloc, sizeof(block), &overalloc)) {
+    errno = ENOMEM;
+    return NULL;
+  }
+
+  block *b = malloc(overalloc);
+  if (!b || overalloc <= sizes[nsize-1]) return b;
+
+
+  b--;
+  // if we're here, overalloc > 128k and we got a block from mmap
+  // mmap returns page aligned memory
+  // now we can 
+  // - find a suitable address
+  size_t actualsize = roundup(size + align + sizeof(block));
+  char *suitable = b->mem + b->size - actualsize;
+
+  // - free up all the rest
+  // last page view:
+  // |.....................................|header|.........................
+  //                                               ^ what we return
+  //                                        ^ 16 bytes before a page boundary
+  //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 4080 bytes to split
+  // split it in 2048 1024 512 256 128 64 32
+  // push back all of these ^
+  // and i don't know what to do with the final 16 bytes
+#endif
+}
+
+
+
+void *aligned_alloc(size_t align, size_t size) { return memalign(align, size); }
+
+int posix_memalign(void **p, size_t align, size_t size) {
+  void *tmp = memalign(align, size);
+  if (!tmp) return errno;
+  *p = tmp;
+  return 0;
+}
+
+void *valloc(size_t size) { return memalign(PAGE_SIZE, size); }
+
+
+void *pvalloc(size_t size) { return memalign(PAGE_SIZE, (size + PAGE_SIZE-1) & ~(PAGE_SIZE-1)); }
